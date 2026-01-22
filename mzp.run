@@ -1,0 +1,16 @@
+name "NoobFix Installer"
+description "Instala o NoobFix v1.0.2"
+version 104
+
+run "NoobFix_Cleanup.ms"
+
+copy "NoobFix.ms" to "$userScripts\NoobFix\"
+
+-- Copia o icone BMP com o nome correto
+copy "NoobFix_24i.bmp" to "$userIcons\"
+
+run "NoobFix_Macro.mcr"
+run "NoobFix_Msg.ms"
+drop "NoobFix_Msg.ms"
+
+clear temp
