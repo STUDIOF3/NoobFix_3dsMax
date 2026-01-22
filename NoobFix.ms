@@ -1,10 +1,11 @@
 /*
-    NoobFix v1.0.2
-    Correção de String (Bug Fix).
+    NoobFix v1.6.0
+    Versao Profissional com Feedback Visual.
     
-    Correções:
-    - Substituído metodo .ToLowerInvariant() (que causava erro) por toLower().
-    - O script agora processa nomes de arquivos corretamente.
+    Novidades:
+    - Barra de Progresso (ProgressBar) real.
+    - RodapÃ© com Creditos e Link para GitHub.
+    - Ajustes finos de layout.
 */
 
 try(destroyDialog rlt_NoobFix)catch()
@@ -16,7 +17,7 @@ global noobScale = try(GetUIScaleFactor())catch(1.0)
 fn s val = (val * noobScale)
 fn p x y = [x * noobScale, y * noobScale]
 
-rollout rlt_NoobFix "NoobFix v1.0.2" width:(s 400) height:(s 620)
+rollout rlt_NoobFix "NoobFix v1.6.0" width:(s 400) height:(s 660)
 (
     -- --- AREA 1: ONDE PROCURAR ---
     groupBox grp_source "1. Biblioteca" pos:(p 10 10) width:(s 380) height:(s 70)
@@ -41,14 +42,20 @@ rollout rlt_NoobFix "NoobFix v1.0.2" width:(s 400) height:(s 620)
     edittext edt_selectedMissing "" pos:(p 18 425) width:(s 360) readOnly:true text:"Caminho completo aparece aqui" border:false
 
     -- --- AREA 4: ACAO ---
-    groupBox grp_action "4. Executar" pos:(p 10 460) width:(s 380) height:(s 130)
+    groupBox grp_action "4. Executar" pos:(p 10 460) width:(s 380) height:(s 150)
     checkbox chk_ext "Ignorar Extensao" pos:(p 20 480) checked:true
     checkbox chk_sub "Incluir Subpastas" pos:(p 200 480) checked:true
     
-    -- Label de status
-    label lbl_info_files "Aguardando..." pos:(p 20 510) width:(s 350) height:(s 20)
+    label lbl_info_files "Aguardando..." pos:(p 20 505) width:(s 350) height:(s 20)
     
-    dotNetControl btn_relink "System.Windows.Forms.Button" pos:(p 20 535) width:(s 360) height:(s 45) 
+    -- Barra de Progresso
+    progressbar pb_status "" pos:(p 20 525) width:(s 360) height:(s 10) color:(color 100 180 110) value:0
+    
+    dotNetControl btn_relink "System.Windows.Forms.Button" pos:(p 20 545) width:(s 360) height:(s 45) 
+
+    -- --- AREA 5: RODAPÃ‰ (GitHub) ---
+    label lbl_dev "Desenvolvido por STUDIOF3" pos:(p 20 625) 
+    hyperLink hl_git "Visitar GitHub" address:"https://github.com/STUDIOF3/NoobFix_3dsMax" pos:(p 300 625) color:(color 230 140 80) hoverColor:(color 255 255 255) visitedColor:(color 230 140 80)
 
     -- Variaveis
     local searchPath = ""
@@ -157,39 +164,57 @@ rollout rlt_NoobFix "NoobFix v1.0.2" width:(s 400) height:(s 620)
     fn runRelink =
     (
         searchPath = cleanPath searchPath
+        pb_status.value = 0 -- Reseta barra
         
         if searchPath == "" or not (doesDirectoryExist searchPath) do (
             messageBox "Selecione uma pasta valida."
             return false
         )
         
-        lbl_info_files.text = "Indexando Biblioteca..."
+        lbl_info_files.text = "Lendo disco..."
         windows.processPostedMessages()
         
         local fileDict = dotNetObject "System.Collections.Hashtable"
         foundLibraryFiles = #()
         
+        -- Fase 1: Leitura (0 a 30%)
         getFilesSafe searchPath chk_sub.checked foundLibraryFiles
+        pb_status.value = 30 
         
-        lbl_info_files.text = "Biblio: " + (foundLibraryFiles.count as string) + " arqs. Comparando..."
+        lbl_info_files.text = "Biblio: " + (foundLibraryFiles.count as string) + " arqs. Indexando..."
         windows.processPostedMessages()
 
         if foundLibraryFiles.count == 0 then (
             messageBox ("ALERTA: 0 arquivos encontrados em:\n" + searchPath) title:"Pasta Vazia?"
+            pb_status.value = 0
             return false
         )
         
-        for f in foundLibraryFiles do (
-            -- CORREÇÃO AQUI: Usando toLower() do MaxScript
+        -- Fase 2: Indexacao (30 a 60%)
+        local totalFiles = foundLibraryFiles.count
+        for i = 1 to totalFiles do (
+            local f = foundLibraryFiles[i]
             local key = toLower (getFilenameFile f.Name)
             if not (fileDict.ContainsKey key) do fileDict.Add key f.FullName
+            
+            -- Atualiza barra a cada 100 arquivos pra nao travar
+            if (mod i 100) == 0 do (
+                local pct = 30.0 + ((i as float / totalFiles as float) * 30.0)
+                pb_status.value = pct
+            )
         )
+        pb_status.value = 60
+        
+        lbl_info_files.text = "Relinkando..."
         
         local definitions = getSupportedMaps()
         local relinkedCount = 0
+        local totalDefs = definitions.count
         
         undo "NoobFix" on (
-            for def in definitions do (
+            -- Fase 3: Relink (60 a 100%)
+            for dIdx = 1 to totalDefs do (
+                local def = definitions[dIdx]
                 local mapClass = def[1]
                 local propName = def[2]
                 local sceneMaps = getClassInstances mapClass
@@ -199,7 +224,6 @@ rollout rlt_NoobFix "NoobFix v1.0.2" width:(s 400) height:(s 620)
                     
                     if currentPath != undefined and currentPath != "" and not (doesFileExist currentPath) do (
                         local missingName = filenameFromPath currentPath
-                        -- CORREÇÃO AQUI TAMBEM
                         local searchKey = toLower (getFilenameFile missingName)
                         
                         if (fileDict.ContainsKey searchKey) then (
@@ -207,7 +231,6 @@ rollout rlt_NoobFix "NoobFix v1.0.2" width:(s 400) height:(s 620)
                             local validMatch = true
                             
                             if not chk_ext.checked do (
-                                -- CORREÇÃO FINAL
                                 if (toLower (getFilenameType currentPath)) != (toLower (getFilenameType newPath)) do validMatch = false
                             )
                             
@@ -218,9 +241,14 @@ rollout rlt_NoobFix "NoobFix v1.0.2" width:(s 400) height:(s 620)
                         )
                     )
                 )
+                
+                -- Atualiza progresso baseado nos tipos de mapa
+                local pct = 60.0 + ((dIdx as float / totalDefs as float) * 40.0)
+                pb_status.value = pct
             )
         )
         
+        pb_status.value = 100
         freeSceneBitmaps()
         completeRedraw()
         scanMissingFiles()
