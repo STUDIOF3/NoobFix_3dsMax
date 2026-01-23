@@ -1,1 +1,1 @@
-messageBox "Instalação da versão 1.0.2 Concluída!\n\nSe já tinha o botão na barra, ele foi atualizado.\nSe não, vá em Customize > Toolbars > Categoria 'NoobTools'." title:"Instalação NoobFix v1.0.2"
+messageBox "Instalação da versão v2.3.0 Concluída!\n\nSe já tinha o botão na barra, ele foi atualizado.\nSe não, vá em Customize > Toolbars > Categoria 'NoobTools'." title: "Instalação NoobFix v2.3.0"

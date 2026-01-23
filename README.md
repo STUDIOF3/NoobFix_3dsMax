@@ -44,24 +44,23 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 
 ---
 
-📋 Changelog / Notas de Atualização (v2.2)
-⚙️ Backend (Motor & Lógica)
-Novo Motor de Diagnóstico (Status Check): Substituição da verificação manual de arquivos (doesFileExist) pela consulta direta ao sistema de rastreamento do 3ds Max (ATSOps.GetFileSystemStatus).
+📋 Changelog / Notas de Atualização (v1.2.6)
 
-Benefício: Se o Asset Tracking (Shift+T) marcar como "Missing", o script agora detecta com 100% de precisão, incluindo arquivos em rede ou caminhos complexos.
+## Changelog
 
-Busca de Arquivos via .NET: Implementação da biblioteca do Windows (System.IO) para varredura de pastas.
+### v2.3.0
 
-Benefício: A indexação de subpastas é agora instantânea e não sofre com as limitações de velocidade do MaxScript nativo.
-
-Relink via Retarget: O processo de relink agora utiliza o comando nativo ATSOps.RetargetSelection.
-
-Benefício: Permite relinkar texturas dentro de XRefs, Containers e materiais complexos que scripts comuns não conseguem acessar.
-
-🛡️ Segurança & Logs
-Log Detalhado (Listener): Inclusão de mensagens de debug no Listener (F11) para rastrear exatamente quais arquivos estão sendo detectados e processados.
-
-Proteção de XRefs: O sistema de Strip tenta evitar apagar caminhos de arquivos referenciados externamente para prevenir danos a outros arquivos do projeto.
+- **Visual Feedback:** Adicionado suporte a duplo clique na lista de arquivos faltantes para selecionar automaticamente os objetos na viewport.
+- **Suporte Estendido:** Inclusão de classes para Redshift, FStorm, Arnold e OSL nas rotinas de diagnóstico e limpeza.
+- **Novo Motor de Diagnóstico (Status Check):** Substituição da verificação manual pela consulta direta ao sistema de rastreamento do 3ds Max (ATSOps), detectando arquivos com 100% de precisão.
+- **Busca de Arquivos via .NET:** Implementação da biblioteca do Windows (System.IO) para varredura de pastas, tornando a indexação de subpastas instantânea.
+- **Relink via Retarget:** O processo de relink agora utiliza o comando nativo `ATSOps.RetargetSelection`, permitindo corrigir texturas dentro de XRefs e Containers.
+- **Auto-Search:** O script agora define automaticamente a pasta do projeto aberto como diretório de busca inicial.
+- **Coletar Arquivos (Collect):** Novo botão para copiar todas as texturas relinkadas para uma pasta `\Maps` junto ao arquivo do projeto.
+- **Conversor UNC:** Novo botão para converter caminhos de unidade local (ex: `Z:\`) para caminhos de rede universais (ex: `\\Servidor\`).
+- **Log Detalhado:** Inclusão de mensagens de debug no Listener (F11) para rastrear exatamente quais arquivos estão sendo detectados e processados.
+- **Proteção de XRefs:** O sistema de Strip tenta evitar apagar caminhos de arquivos referenciados externamente para prevenir danos a outros arquivos do projeto.
+- **Interface:** Ajustes de layout para acomodar as novas ferramentas mantendo o design clássico da v1.6.
 
 ---
 

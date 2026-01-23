@@ -1,6 +1,6 @@
 name "NoobFix Installer"
-description "Instala o NoobFix v1.0.2"
-version 104
+description "Instala o NoobFix v2.3.0"
+version 126
 
 run "NoobFix_Cleanup.ms"
 
