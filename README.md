@@ -22,7 +22,7 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 
 ---
 
-![Preview do Script](preview.png)
+![Preview do Script](assets/preview.png)
 
 ## 📦 Como Instalar
 
