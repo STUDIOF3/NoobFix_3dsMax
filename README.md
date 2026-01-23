@@ -22,8 +22,6 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 
 ---
 
-![Preview do Script](assets/preview.png)
-
 ## 📦 Como Instalar
 
 1.  Baixe a última versão na aba [Releases](../../releases).
