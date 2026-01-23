@@ -34,6 +34,8 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 
 ---
 
+![Preview do Script](assets/preview.png)
+
 ## 🖥️ Como Usar
 
 1.  **Selecione a Pasta:** Clique em `...` ou escolha um Favorito para definir onde o script deve procurar as texturas.
