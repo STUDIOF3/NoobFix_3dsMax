@@ -46,8 +46,6 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 
 ---
 
-📋 Changelog / Notas de Atualização (v1.2.6)
-
 ## Changelog
 
 ### v2.3.0
