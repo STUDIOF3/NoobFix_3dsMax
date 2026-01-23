@@ -12,13 +12,13 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 
 ## 🚀 Funcionalidades Principais
 
-* **Busca Inteligente:** Algoritmo otimizado para encontrar texturas perdidas em segundos.
-* **Modo Seguro (Safe Mode):** Método de leitura recursiva que evita que o 3ds Max trave ao encontrar pastas corrompidas ou com nomes excessivamente longos.
-* **Suporte Universal:** Funciona com Standard, V-Ray, Corona, Arnold, Redshift, FStorm e OSL.
-* **Sistema de Favoritos:** Salve as pastas da sua biblioteca para acesso rápido.
-* **Diagnóstico Visual:** Lista interativa que mostra exatamente quais arquivos estão faltando na cena.
-* **Interface Responsiva:** Ajuste automático de escala para monitores FullHD, 2K e 4K (High DPI).
-* **Ignorar Extensões:** Capacidade de relinkar arquivos mesmo se a extensão mudou (ex: `.jpg` para `.png`).
+- **Busca Inteligente:** Algoritmo otimizado para encontrar texturas perdidas em segundos.
+- **Modo Seguro (Safe Mode):** Método de leitura recursiva que evita que o 3ds Max trave ao encontrar pastas corrompidas ou com nomes excessivamente longos.
+- **Suporte Universal:** Funciona com Standard, V-Ray, Corona, Arnold, Redshift, FStorm e OSL.
+- **Sistema de Favoritos:** Salve as pastas da sua biblioteca para acesso rápido.
+- **Diagnóstico Visual:** Lista interativa que mostra exatamente quais arquivos estão faltando na cena.
+- **Interface Responsiva:** Ajuste automático de escala para monitores FullHD, 2K e 4K (High DPI).
+- **Ignorar Extensões:** Capacidade de relinkar arquivos mesmo se a extensão mudou (ex: `.jpg` para `.png`).
 
 ---
 
@@ -28,9 +28,9 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 2.  Arraste o arquivo `NoobFix_Installer.mzp` para dentro da viewport do 3ds Max.
 3.  Uma mensagem confirmará a instalação.
 4.  Para adicionar o botão à sua barra:
-    * Vá em **Customize** > **Customize User Interface** > **Toolbars**.
-    * Procure pela categoria: **NoobTools**.
-    * Arraste o **NoobFix** para sua barra de ferramentas.
+    - Vá em **Customize** > **Customize User Interface** > **Toolbars**.
+    - Procure pela categoria: **NoobTools**.
+    - Arraste o **NoobFix** para sua barra de ferramentas.
 
 ---
 
@@ -44,36 +44,24 @@ Diferente de outros scripts, o NoobFix foi construído utilizando métodos híbr
 
 ---
 
-## 📝 Histórico de Atualizações (Changelog)
+📋 Changelog / Notas de Atualização (v2.2)
+⚙️ Backend (Motor & Lógica)
+Novo Motor de Diagnóstico (Status Check): Substituição da verificação manual de arquivos (doesFileExist) pela consulta direta ao sistema de rastreamento do 3ds Max (ATSOps.GetFileSystemStatus).
 
-### v1.6.0 (Versão Atual)
-* **Novo:** Adicionada Barra de Progresso visual (verde) para acompanhar o status da busca.
-* **Novo:** Rodapé com créditos e link direto para o repositório GitHub.
-* **UI:** Ajustes finos de altura da janela para melhor visualização.
+Benefício: Se o Asset Tracking (Shift+T) marcar como "Missing", o script agora detecta com 100% de precisão, incluindo arquivos em rede ou caminhos complexos.
 
-### v1.5.2
-* **Fix:** Correção crítica no tratamento de Strings (Case Sensitive) que causava erro em alguns sistemas.
-* **Fix:** Melhoria na compatibilidade do "Modo Seguro".
+Busca de Arquivos via .NET: Implementação da biblioteca do Windows (System.IO) para varredura de pastas.
 
-### v1.5.0
-* **Novo:** Implementação do **Safe Mode** (Busca Segura). O script agora lê pasta por pasta individualmente, impedindo que um erro de permissão do Windows cancele toda a busca.
-* **Fix:** Tratamento para caminhos de arquivo muito longos (limite do Windows).
+Benefício: A indexação de subpastas é agora instantânea e não sofre com as limitações de velocidade do MaxScript nativo.
 
-### v1.4.0
-* **Novo:** Sistema de alerta caso a pasta selecionada esteja vazia ou bloqueada.
-* **Fix:** Função de limpeza de caminhos para evitar barras duplicadas.
+Relink via Retarget: O processo de relink agora utiliza o comando nativo ATSOps.RetargetSelection.
 
-### v1.3.0
-* **Novo:** **Suporte High DPI (4K)**. O script detecta a escala do monitor e ajusta automaticamente o tamanho das fontes e botões.
+Benefício: Permite relinkar texturas dentro de XRefs, Containers e materiais complexos que scripts comuns não conseguem acessar.
 
-### v1.1.0 - v1.2.0
-* **UI:** Reformulação visual para estilo "Flat" com botões coloridos modernos.
-* **UX:** Melhor feedback visual nos botões de ação.
+🛡️ Segurança & Logs
+Log Detalhado (Listener): Inclusão de mensagens de debug no Listener (F11) para rastrear exatamente quais arquivos estão sendo detectados e processados.
 
-### v1.0.0
-* Lançamento inicial.
-* Sistema de busca via .NET Hashtables.
-* Suporte a V-Ray e Corona.
+Proteção de XRefs: O sistema de Strip tenta evitar apagar caminhos de arquivos referenciados externamente para prevenir danos a outros arquivos do projeto.
 
 ---
 
